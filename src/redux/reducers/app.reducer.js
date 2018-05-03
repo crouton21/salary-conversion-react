@@ -5,8 +5,8 @@ const submitEmployee = (state = [], action) => {
         case ('SUBMIT_EMPLOYEE'):
             return [...state, action.payload];
         case ('DELETE_EMPLOYEE'):
-            let index = state.indexOf(action.payload);
-            state.splice(index, 1);
+            const matchEmployee = (employee) => employee.idNumber !== action.payload.idNumber;
+            return state.filter(matchEmployee);
         default:
             return state;
     }

@@ -68,10 +68,6 @@ class EmployeeForm extends Component {
   }
 }
 
-// EmployeeForm.propTypes = {
-//   addEmployee: PropTypes.func.isRequired,
-// };
-
 const mapReduxStateToProps = (reduxState) => {
   return {
     reduxState

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import EmployeeForm from '../EmployeeForm/EmployeeForm';
 import EmployeeList from '../EmployeeList/EmployeeList';
 import EmployeeTotal from '../EmployeeTotal/EmployeeTotal';
+import { connect } from 'react-redux';
 
 class App extends Component {
   constructor() {
@@ -10,34 +11,36 @@ class App extends Component {
     this.state = {
       employeeList: [],
     };
-
-    this.addEmployee = this.addEmployee.bind(this);
-    this.deleteEmployee = this.deleteEmployee.bind(this);
   }
 
-  addEmployee(newEmployee) {
-    this.setState({
-      employeeList: [...this.state.employeeList, newEmployee],
-    });
-  }
-
-  deleteEmployee(employeeToDelete) {
-    const matchEmployee = employee => employee.idNumber !== employeeToDelete.idNumber;
-
+  deleteEmployee = (employeeToDelete) => {
+    console.log(employeeToDelete);
+    const matchEmployee = (employee) => employee.idNumber !== employeeToDelete.idNumber;
     this.setState({
       employeeList: this.state.employeeList.filter(matchEmployee),
     });
+    this.props.dispatch({
+      type: 'DELETE_EMPLOYEE',
+      payload: this.state.employeeList,
+    })
   }
 
   render() {
     return (
       <div>
-        <EmployeeForm addEmployee={this.addEmployee} />
-        <EmployeeList employeeList={this.state.employeeList} deleteEmployee={this.deleteEmployee} />
-        <EmployeeTotal employeeList={this.state.employeeList} />
+        <EmployeeForm />
+        {/* <pre>{JSON.stringify(this.props.reduxState.submitEmployee)}</pre> */}
+        <EmployeeList employeeList={this.props.reduxState.submitEmployee} deleteEmployee={this.deleteEmployee} />
+        <EmployeeTotal employeeList={this.props.reduxState.submitEmployee} />
       </div>
     );
   }
 }
 
-export default App;
+const mapReduxStateToProps = (reduxState) => {
+  return {
+    reduxState
+  }
+}
+
+export default connect(mapReduxStateToProps)(App);
